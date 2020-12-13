@@ -1,7 +1,7 @@
 <?php
 include "db.php";
 include("auth.php");
-
+//get the todo list, and insert it to Database
 if(isset($_POST['add_todo'])){
     $user_id = $_SESSION['id'];
     $username = $_SESSION['username'];

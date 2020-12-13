@@ -53,6 +53,7 @@ if($_SESSION['admin']!=1) {
                             $res=$db->query($sql);
                             if($res->num_rows>0){
                                 $i=0;
+                                //A row is created for each record
                                 while($row=$res->fetch_assoc()){
                                     $name = $row["first_name"]." ".$row["second_name"];
                                     $i++;

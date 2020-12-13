@@ -56,7 +56,7 @@
                 }
                 else
                 {
-                    echo "<p class='success'>Registration Failed.</p>";
+                    $_SESSION['error']="E-mail id and Password dosen't match";
                 }
             }
         ?>
@@ -65,6 +65,21 @@
         <?php include "navbar.php"; ?>
         <!-- Content starts from here -->
         <div class="main-content">
+        <!-- This is to display the error message if occured -->
+        <?php    
+                if(isset($_SESSION['error']))
+                {
+            ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?php echo $_SESSION['error'] ?>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            <?php
+                }
+                unset($_SESSION['error']);
+            ?>
             <div class="card text center container col-6 mt-5 mb-4" id="login">
                 <div class="card-body" id="login_content">
                     <!-- Default form login -->
@@ -73,10 +88,10 @@
                         <h3 class="h4 mb-4">Sign in</h3>
 
                         <!-- Email -->
-                        <input type="email" name="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
+                        <input type="email" name="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail" required>
 
                         <!-- Password -->
-                        <input type="password" name="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
+                        <input type="password" name="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" required>
 
                         <!-- Sign in button -->
                         <button class="btn btn-dark btn-block my-4" type="submit" name="submit" style="border-radius:20px;">Sign in</button>

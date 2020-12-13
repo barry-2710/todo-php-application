@@ -42,6 +42,9 @@
                     
                 if($db->query($sql))
                 { 
+                    $user_data ="SELECT * FROM users WHERE email='$email' AND password='$password' ";
+                    $res=$db->query($user_data);
+                    $row=$res->fetch_assoc();
                     $_SESSION['success']=" You have successfully Logged in";
                     $_SESSION["loggedin"] = true;
                     $_SESSION["id"] = $row['user_id'];  
@@ -51,12 +54,26 @@
                 }
                 else
                 {
-                    echo "<p class='success'>Registration Failed.</p>";
+                    $_SESSION['error']="Error! couldn't register";
                 }
             }
         ?>
         <!-- This is Navbar -->
         <?php include "navbar.php"; ?>
+        <?php    
+            if(isset($_SESSION['error']))
+            {
+        ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?php echo $_SESSION['error'] ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <?php
+            }
+            unset($_SESSION['error']);
+        ?>
         <!-- Content starts from here -->
         <div class="card text center container col-6 mt-5 mb-4" id="login">
             <div class="card-body" id="login_content">
@@ -68,21 +85,21 @@
                     <div class="form-row mb-4">
                         <div class="col">
                             <!-- First name -->
-                            <input type="text" id="defaultRegisterFormFirstName" name="first_name" class="form-control" placeholder="First name">
+                            <input type="text" id="defaultRegisterFormFirstName" name="first_name" class="form-control" placeholder="First name" required>
                         </div>
                         <div class="col">
                             <!-- Last name -->
-                            <input type="text" id="defaultRegisterFormLastName" name="second_name" class="form-control" placeholder="Last name">
+                            <input type="text" id="defaultRegisterFormLastName" name="second_name" class="form-control" placeholder="Last name" required >
                         </div>
                     </div>
 
                     <!-- E-mail -->
-                    <input type="email" id="defaultRegisterFormEmail" name="email" class="form-control mb-4" placeholder="E-mail">
+                    <input type="email" id="defaultRegisterFormEmail" name="email" class="form-control mb-4" placeholder="E-mail" required>
 
                     <!-- Password -->
-                    <input type="password" id="defaultRegisterFormPassword" name="password" class="form-control mb-4" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock">
+                    <input type="password" id="defaultRegisterFormPassword" name="password" class="form-control mb-4" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock" required>
                     <!-- Phone number -->
-                    <input type="text" id="defaultRegisterPhonePassword" name="phone_number" class="form-control mb-4" placeholder="Phone number" aria-describedby="defaultRegisterFormPhoneHelpBlock">
+                    <input type="number" id="defaultRegisterPhonePassword" name="phone_number" class="form-control mb-4" placeholder="Phone number" aria-describedby="defaultRegisterFormPhoneHelpBlock" required>
                     
                     <small class="float-left text-muted">DOB</small>
                     <input type="date" placeholder="Date" id="birthday" class="form-control textbox-n" name="dob" onfocus="(this.type='date')" onblur="(this.type='text')">

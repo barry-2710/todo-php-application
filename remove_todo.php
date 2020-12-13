@@ -1,6 +1,7 @@
 <?php
 include "db.php";
 include("auth.php");
+//A simple piece of code which get the id of a todo task and delets it from table
 
 if(isset($_POST['remove'])){
     $id = $_POST['todo_id'];
