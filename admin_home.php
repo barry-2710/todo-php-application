@@ -1,6 +1,10 @@
 <?php
 include("db.php");
 include("auth.php");
+if($_SESSION['admin']!=1) {
+    header("Location: user_home.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
