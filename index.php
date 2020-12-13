@@ -1,3 +1,17 @@
+<?php
+    session_start(); 
+    include "db.php";
+    if(isset($_SESSION["loggedin"])) {
+        if($_SESSION["admin"]==1){
+            header("Location: admin_home.php");
+            exit();
+        }
+        else{
+            header("Location: user_home.php");
+            exit();
+        }
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +31,36 @@
     </style>
 </head>
     <body>
+    <!-- This is the login code -->
+    <?php
+            if(isset($_POST['submit'])){
+                $email=$_POST["email"];
+                $password=$_POST["password"];
+                $sql="SELECT * FROM users WHERE email='$email' AND password='$password' ";
+                $res=$db->query($sql);    
+                if($res->num_rows>0)
+                { 
+                    $row=$res->fetch_assoc(); 
+                    $_SESSION['success']=" You have successfully Logged in";
+                    $_SESSION["loggedin"] = true;
+                    $_SESSION["id"] = $row['user_id'];  
+                    $_SESSION["username"] = $row['first_name'];
+                    if($row['admin']==1){
+                        $_SESSION['admin']=1;
+                        echo "<script>window.open('user_home.php','_self')</script>";
+                    }
+                    else{
+                        $_SESSION['admin']=0;
+                        echo "<script>window.open('user_home.php','_self')</script>";
+                    }  
+                }
+                else
+                {
+                    echo "<p class='success'>Registration Failed.</p>";
+                }
+            }
+        ?>
+
         <!-- This is Navbar -->
         <?php include "navbar.php"; ?>
         <!-- Content starts from here -->
@@ -24,18 +68,18 @@
             <div class="card text center container col-6 mt-5 mb-4" id="login">
                 <div class="card-body" id="login_content">
                     <!-- Default form login -->
-                    <form class="text-center p-4 " action="#!">
+                    <form class="text-center p-4 " action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
 
                         <h3 class="h4 mb-4">Sign in</h3>
 
                         <!-- Email -->
-                        <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
+                        <input type="email" name="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
 
                         <!-- Password -->
-                        <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
+                        <input type="password" name="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
 
                         <!-- Sign in button -->
-                        <button class="btn btn-dark btn-block my-4" type="submit" style="border-radius:20px;">Sign in</button>
+                        <button class="btn btn-dark btn-block my-4" type="submit" name="submit" style="border-radius:20px;">Sign in</button>
 
                         <!-- Register -->
                         <p>Not a member?

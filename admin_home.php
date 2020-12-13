@@ -1,3 +1,7 @@
+<?php
+include("db.php");
+include("auth.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,51 +15,54 @@
         .main-content{
             min-height: 100vh;
         }
+        #login{
+            background: rgba(255, 255, 255, 0.8);
+        }
     </style>
 </head>
     <body>
+     <?php $result = mysqli_query($db,"SELECT COUNT(*) FROM users"); 
+     $count = mysqli_fetch_array($result)[0];
+     ?>
         <!-- This is Navbar -->
         <?php include "navbar.php"; ?>
         <!-- Content starts from here -->
         <div class="main-content">
             <div class="container pt-4">
                 <p class="display-4 text-center text-white">Admin Dashboard</p>
+                <h5 class="text-white text-center">Go back to <a href="user_home.php" class="text-white">Home</a></h5>
             </div>
-            <div class="card text center container col-6 mt-5 mb-4" id="login">
-                <div class="card-body" id="login_content">    
-                    <h2 class="display-5 text-center">User List [3]</h2>
-                <table class="table">
+                    <h2 class="display-5 text-center text-white pt-3">User List [<?php echo $count; ?>]</h2>
+                <table class="table container" id="login">
                     <thead>
                         <tr>
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email </th>
-                        <th scope="col">Registered on</th>
+                        <th scope="col">Phone </th>
+                        <th scope="col">DOB</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                        <th scope="row">1</th>
-                        <td>Barry</td>
-                        <td>barry@gmail.com</td>
-                        <td>12/12/2020</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">2</th>
-                        <td>Garry</td>
-                        <td>garry112@gmail.com</td>
-                        <td>11/12/2020</td>
-                        </tr>
-                        <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>larrylarry@gmail.com</td>
-                        <td>11/12/2020</td>
-                        </tr>
+                        <?php 
+                            $sql = "SELECT * FROM users";
+                            $res=$db->query($sql);
+                            if($res->num_rows>0){
+                                $i=0;
+                                while($row=$res->fetch_assoc()){
+                                    $name = $row["first_name"]." ".$row["second_name"];
+                                    $i++;
+                                    echo "<tr>";
+                                    echo "<th scope='row'>{$i}</th>";
+                                    echo "<td>{$name}</td>";
+                                    echo "<td>{$row["email"]}</td>";
+                                    echo "<td>{$row["phone_number"]}</td>";
+                                    echo "<td>{$row["dob"]}</td>";
+                                }
+                            }
+                        ?>
                     </tbody>
                 </table>
-                </div>
-            </div>
         </div>
         <?php include('footer.php') ?>
 

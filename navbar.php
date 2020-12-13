@@ -16,8 +16,15 @@
         <!-- This is the navbar -->
         <nav class="navbar navbar-light bg-dark">
         <a class="navbar-brand" href="#">
-            <img src="src/images/logo.png" width="100" height="30" class="d-inline-block align-top" alt="">
+            <img src="src/images/logo.png" width="100" height="30" class=" align-top" alt="">
         </a>
+        <?php 
+            if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+        ?>
+        <a href="logout.php" class="text-white d-inline">Logout</a> 
+        <?php
+            }
+        ?>
         </nav>
 
     <script src="https://kit.fontawesome.com/aab1532f44.js" crossorigin="anonymous"></script>
